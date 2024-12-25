@@ -16,7 +16,8 @@ class WeatherViewModel: ObservableObject {
     @Published var searchResults: [(SearchLocation, Current, UIImage?)]
     @Published private var currentWeather: WeatherModel?
     @Published var currentImage: UIImage?
-    @Published var errorMessage: String?
+    @Published var errorMessage: AlertItem?
+    var isCancelledSearch: Bool = false
     private var autoUpdateCancelleble: AnyCancellable?
     private var autoImageUpdateCancelleble: AnyCancellable?
         
@@ -57,7 +58,22 @@ class WeatherViewModel: ObservableObject {
         return Int(temp)
     }
     
-    func fetchSearchingCititesWithWeather(from text: String) async throws {
+    var humidity: Int? {
+        guard let humidity = currentWeather?.current.humidity else { return nil }
+        return Int(humidity)
+    }
+    
+    var UV: Int? {
+        guard let uv = currentWeather?.current.uv else { return nil }
+        return Int(uv)
+    }
+    
+    var feelsLike: Int? {
+        guard let feelsLike = currentWeather?.current.feelslike_f else { return nil }
+        return Int(feelsLike)
+    }
+    
+    func loadSearchingCititesWithWeather(from text: String) async {
         do {
             let cities = try await fetchSearchingCities(from: text)
             var searchedResults: [(SearchLocation, Current, UIImage)] = []
@@ -67,6 +83,7 @@ class WeatherViewModel: ObservableObject {
                 searchedResults.append((city, currentWeather.current, image))
             }
             let results = searchedResults
+            guard !self.isCancelledSearch else { return }
             await MainActor.run {
                 withAnimation{
                     searchResults = results
@@ -184,11 +201,11 @@ class WeatherViewModel: ObservableObject {
             self.currentWeather = nil
             self.searchResults = []
             if let networkError = error as? NetworkError {
-                errorMessage = networkError.localizedDescription
+                errorMessage = AlertItem(message: networkError.localizedDescription)
             } else if let urlError = error as? URLError {
-                errorMessage = "Network error: \(urlError.localizedDescription)"
+                errorMessage = AlertItem(message: "Network error: \(urlError.localizedDescription)")
             } else {
-                errorMessage = "Unexpected error: \(error.localizedDescription)"
+                errorMessage = AlertItem(message: "Unexpected error: \(error.localizedDescription)")
             }
             print(errorMessage ?? "")
         }

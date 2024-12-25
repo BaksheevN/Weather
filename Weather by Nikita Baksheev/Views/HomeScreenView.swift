@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeScreenView: View {
 
+    @StateObject private var keyboardObserver: KeyboardObserver = KeyboardObserver()
     @ObservedObject private var weatherViewModel: WeatherViewModel = WeatherViewModel()
     @State var isSearching: Bool = false
     @State var text: String = ""
@@ -22,14 +23,22 @@ struct HomeScreenView: View {
                     .frame(height: searchHeight)
                     .padding(.horizontal, 24)
                     .padding(.top, 8)
+                if weatherViewModel.searchResults.isEmpty {
+                    CurrentWeatherView(weatherViewModel: weatherViewModel)
+                        .padding(.top, keyboardObserver.isKeyboardVisible ? 0 : 74)
+                }
                 if !weatherViewModel.searchResults.isEmpty {
                     SearchResultsView(weatherViewModel: weatherViewModel, text: $text)
                 }
                 Spacer(minLength: 0)
             }
-            if weatherViewModel.searchResults.isEmpty {
-                CurrentWeatherView(weatherViewModel: weatherViewModel)
-            }
+        }
+        .alert(item: $weatherViewModel.errorMessage) { error in
+            Alert(title: Text("Error"),
+                  message: Text(error.message),
+                  dismissButton: .default(Text("Ok"), action: {
+                weatherViewModel.errorMessage = nil
+            }))
         }
     }
 }

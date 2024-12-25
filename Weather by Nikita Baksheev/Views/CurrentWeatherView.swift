@@ -43,6 +43,54 @@ struct CurrentWeatherView: View {
                         .padding(.top, 6)
                 }
             }
+            // weather details
+            if weatherViewModel.citySelected {
+                ZStack {
+                    RoundedRectangle(cornerRadius: buttonRadius)
+                        .foregroundStyle(backgroundColor)
+                    HStack(alignment: .center) {
+                        // humidity
+                        if let humidity = weatherViewModel.humidity {
+                            VStack {
+                                Text("Humidity")
+                                    .font(.poppins(size: 12, weight: "Medium"))
+                                    .foregroundStyle(headerColor)
+                                Text("\(humidity)")
+                                    .font(.poppins(size: 15, weight: "Medium"))
+                                    .foregroundStyle(textDetailColor)
+                            }
+                        }
+                        Spacer()
+                        // UV
+                        if let UV = weatherViewModel.UV {
+                            VStack {
+                                Text("UV")
+                                    .font(.poppins(size: 12, weight: "Medium"))
+                                    .foregroundStyle(headerColor)
+                                Text("\(UV)")
+                                    .font(.poppins(size: 15, weight: "Medium"))
+                                    .foregroundStyle(textDetailColor)
+                            }
+                        }
+                        Spacer()
+                        // feels like
+                        if let feelsLike = weatherViewModel.feelsLike {
+                            VStack {
+                                Text("Feels Like")
+                                    .font(.poppins(size: 12, weight: "Medium"))
+                                    .foregroundStyle(headerColor)
+                                Text("\(feelsLike)")
+                                    .font(.poppins(size: 15, weight: "Medium"))
+                                    .foregroundStyle(textDetailColor)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                }
+                .frame(height: 75)
+                .padding(.top, 20)
+                .padding(.horizontal, 50)
+            }
         }
     }
 }
@@ -52,3 +100,7 @@ struct CurrentWeatherView: View {
 }
 
 private let textColor = Color(red: 44/255, green: 44/255, blue: 44/255)
+private let backgroundColor = Color(red: 242/255, green: 242/255, blue: 242/255)
+private let buttonRadius: CGFloat = 16
+private let headerColor = Color(red: 196/255, green: 196/255, blue: 196/255)
+private let textDetailColor = Color(red: 154/255, green: 154/255, blue: 154/255)

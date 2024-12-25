@@ -31,12 +31,9 @@ struct SearchLocationField: View {
                 .font(.poppins(size: 16, weight: "Regular"))
                 .onChange(of: text) {
                     if text != "" {
+                        weatherViewModel.isCancelledSearch = false
                         Task {
-                            do {
-                                try await weatherViewModel.fetchSearchingCititesWithWeather(from: text)
-                            } catch {
-                                print(error)
-                            }
+                            await weatherViewModel.loadSearchingCititesWithWeather(from: text)
                         }
                     }
                 }

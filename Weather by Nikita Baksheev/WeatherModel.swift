@@ -56,3 +56,9 @@ struct SearchLocation: Codable, Identifiable {
     let lon: Double
     let url: String
 }
+
+struct AlertItem: Identifiable {
+    let id = UUID() // Unique identifier for each alert
+    let message: String
+}
+
