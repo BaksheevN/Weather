@@ -22,10 +22,10 @@ struct SearchResultsView: View {
                                 await weatherViewModel.loadCurrentWeather(from: result.0.name)
                                 await MainActor.run {
                                     withAnimation {
+                                        weatherViewModel.isCancelledSearch = true
+                                        weatherViewModel.searchResults.removeAll()
                                         text = ""
                                         hideKeyboard()
-                                        weatherViewModel.searchResults.removeAll()
-                                        weatherViewModel.isCancelledSearch = true
                                     }
                                 }
                             }
