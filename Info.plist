@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<!--
-   Info.plist
-   Weather by Nikita Baksheev
-
-   Created by Nikita Baksheev on 21.12.2024.
-   Copyright (c) 2024 ___ORGANIZATIONNAME___. All rights reserved.
--->
 <plist version="1.0">
-<dict/>
+<dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Poppins-Regular.ttf</string>
+		<string>Poppins-Bold.ttf</string>
+		<string>Poppins-SemiBold.ttf</string>
+		<string>Poppins-Medium.ttf</string>
+		<string>Poppins-BlackItalic.ttf</string>
+		<string>Poppins-Light.ttf</string>
+	</array>
+</dict>
 </plist>

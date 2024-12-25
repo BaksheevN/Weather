@@ -29,11 +29,18 @@ struct SearchLocationField: View {
                 .focused($isFocused)
                 .padding(.horizontal, 20)
                 .font(.poppins(size: 16, weight: "Regular"))
-                .onSubmit {
-                    Task {
-                        await weatherViewModel.loadCurrentWeather(from: text)
+                .onChange(of: text) {
+                    if text != "" {
+                        Task {
+                            do {
+                                try await weatherViewModel.fetchSearchingCititesWithWeather(from: text)
+                            } catch {
+                                print(error)
+                            }
+                        }
                     }
                 }
+            
             HStack {
                 Spacer()
                 Image(systemName: "magnifyingglass")
@@ -44,7 +51,6 @@ struct SearchLocationField: View {
             }
         }
         .onTapGesture {
-            text = ""
             isFocused = true // Activates the TextField when the custom area is tapped
         }
     }
