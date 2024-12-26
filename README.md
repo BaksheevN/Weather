@@ -1,0 +1,1 @@
+It's a simple weather app was made using SwiftUI. Looks good and is well animated. It's show some weather info such as city, temperature, weather condition image,  humidity (%), UV index, feels like temperature. It has search cities function. It's separated by MVVM architecture. There is smooth API integration with https://www.weatherapi.com and error handling.
